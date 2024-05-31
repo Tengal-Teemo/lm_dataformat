@@ -292,7 +292,7 @@ class Archive:
     def add_data(self, data, meta={}):
         self.compressor.write(json.dumps({'text': data, 'meta': meta}).encode('UTF-8') + b'\n')
     
-    def commit(self, archive_name='default'):
+    def commit(self, archive_name='default') -> str:
         fname = self.out_dir + '/data_' + str(self.i) + '_time' + str(int(time.time())) + '_' + archive_name + '.jsonl.zst'
         self.compressor.flush(zstandard.FLUSH_FRAME)
         
@@ -303,6 +303,7 @@ class Archive:
         self.compressor = self.cctx.stream_writer(self.fh)
 
         self.i += 1
+        return fname
 
 
 class DatArchive:
